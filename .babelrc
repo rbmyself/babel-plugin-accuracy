@@ -1,0 +1,10 @@
+{
+    "presets": ["env"],
+    // "plugins": [
+    //     [
+    //         "./src/index", {    "checkCong": "true" }
+    //     ] 
+    // ]
+      
+    
+}

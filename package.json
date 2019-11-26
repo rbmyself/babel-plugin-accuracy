@@ -1,0 +1,21 @@
+{
+  "name": "@lianjia/babel-plugin-accuracy",
+  "version": "0.0.5-beta.5",
+  "description": "js计算精度问题",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "lijianbing",
+  "license": "ISC",
+  "dependencies": {
+    "babel-core": "^6.26.3",
+    "babel-preset-env": "^1.7.0"
+  },
+  "devDependencies": {
+    "babel-jest": "^24.9.0",
+    "babel-plugin-tester": "^7.0.1",
+    "jest": "^24.9.0",
+    "regenerator-runtime": "^0.13.3"
+  }
+}
