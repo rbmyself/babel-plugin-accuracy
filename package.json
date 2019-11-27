@@ -1,6 +1,6 @@
 {
   "name": "babel-plugin-accuracy",
-  "version": "0.0.1-beta.1",
+  "version": "0.0.1-beta.2",
   "description": "项目容错",
   "main": "src/index.js",
   "scripts": {
