@@ -33,7 +33,7 @@ function pushCache(operation,state){
     operationFun !== 'none' && needRequireCache.push(operationFun);
     return operationFun;
 }
-function alreadyWrapped (node) {
+function alreadyWrapped (node,t) {
     let body = node.body.body;
     return body && body.length === 1 && t.isTryStatement(body[0]);
 }
@@ -82,7 +82,7 @@ function exactCal(babel){
                     return 
                 }                
                 var  node= path.node
-                if (node.async && !alreadyWrapped(node)) {
+                if (node.async && !alreadyWrapped(node,t)) {
                     node.body = wrap(node.body);
                 }            
             },
