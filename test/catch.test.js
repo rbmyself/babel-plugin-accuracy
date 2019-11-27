@@ -6,7 +6,8 @@ pluginTester({
 	pluginName: 'arithmetic-overload',
     plugin: arithmeticOverload,
     pluginOptions:{
-        checkCong:true
+        promiseCatch:true,
+        
     },
   
     tests: [

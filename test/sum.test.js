@@ -36,13 +36,20 @@ pluginTester({
         }
         `,
 
-    //     output:`
-    //     function asyncError (error) {
-    //         console.error('error:', error);
-    //     }
-        
-       
-    // `,
+        output:`
+        var {
+          accAdd,
+          accCong
+        } = require("@lianjia/babel-plugin-accuracy/src/calc.js");
+
+        function a(b, c) {
+          console.log(accAdd(0.1, 0.2));
+
+          if (accCong(b, c)) {
+            return 0;
+          }
+        }
+    `,
     snapshot: false,}, 
       ],
 })

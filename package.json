@@ -1,12 +1,26 @@
 {
-  "name": "@lianjia/babel-plugin-accuracy",
-  "version": "0.0.5-beta.5",
-  "description": "js计算精度问题",
+  "name": "babel-plugin-accuracy",
+  "version": "0.0.1-beta.1",
+  "description": "项目容错",
   "main": "src/index.js",
   "scripts": {
     "test": "jest"
   },
-  "author": "lijianbing",
+  "keywords": [
+    "float",
+    "catch",
+    "async",
+    "Data",
+    "bug"
+  ],
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rbmyself/babel-plugin-accuracy"
+  },
+  "author": "seize",
   "license": "ISC",
   "dependencies": {
     "babel-core": "^6.26.3",

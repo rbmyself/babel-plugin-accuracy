@@ -28,7 +28,6 @@ function pushCache(operation,state){
     }
     if(state.opts && !!state.opts['checkCong'] &&(operation === '===')){
         operationFun = 'accCong'
-        console.log('yeah')
     }
     if(needRequireCache.indexOf(operationFun)>=0) return operationFun;
     operationFun !== 'none' && needRequireCache.push(operationFun);
@@ -41,13 +40,10 @@ function alreadyWrapped (node) {
 var needRequireCache = [];
 
 function exactCal(babel){
-
     var t = babel.types;
     var template = babel.template;
-
     var preOperationAST = template('FUN_NAME(ARGS)');
     var requireAST = template('var PROPERTIES = require(SOURCE)');
-
     function preObjectExpressionAST(keys){
         var properties = keys.map(function(key){
             return t.objectProperty(t.identifier(key),t.identifier(key), false, true);
@@ -58,51 +54,40 @@ function exactCal(babel){
     return {
         visitor:{
             CallExpression:{
-                exit: function(path){
-                    var node  = path.node
-
-                  
-                    if(path.parentPath&&path.parentPath.parent&&t.isCallExpression(path.parentPath.parent)){
-                      
-                        return
+                exit: function(path,state){
+                    if(state.opts && !state.opts['promiseCatch'] ){
+                        return 
                     }
-                  
-                     var   memberExpression= t.memberExpression
-                      var  callExpression= t.callExpression
-                     var   blockStatement= t.blockStatement
-                      var  arrowFunctionExpression= t.arrowFunctionExpression
-                      var consoleerrTemp = template.ast('console.error(err)');
-                   
-                          if (
-                        
-                            t.isIdentifier(node.callee.property) &&
-                            node.callee.property.name === 'then'
-                          ) {
-                            var arrowFunc = arrowFunctionExpression([t.identifier('err')], blockStatement([consoleerrTemp]))
-                            var originFunc = callExpression(node.callee, node.arguments)
-                            var newFunc = memberExpression(originFunc, t.identifier('catch'))
-                            var newp = callExpression(newFunc,[arrowFunc])                     
-                            // console.log(newp)
-                            path.replaceWith(newp)
-                            path.skip() 
-                          }
-                        // }
-                        return false
-                    // })
+                    var node  = path.node             
+                    if(path.parentPath&&path.parentPath.parent&&t.isCallExpression(path.parentPath.parent)){                  
+                        return
+                    }                
+                    var   memberExpression= t.memberExpression
+                    var  callExpression= t.callExpression
+                    var   blockStatement= t.blockStatement
+                    var  arrowFunctionExpression= t.arrowFunctionExpression
+                    var consoleerrTemp = template.ast('console.error(err)');               
+                    if (t.isIdentifier(node.callee.property) &&node.callee.property.name === 'then') {
+                        var arrowFunc = arrowFunctionExpression([t.identifier('err')], blockStatement([consoleerrTemp]))
+                        var originFunc = callExpression(node.callee, node.arguments)
+                        var newFunc = memberExpression(originFunc, t.identifier('catch'))
+                        var newp = callExpression(newFunc,[arrowFunc])                     
+                        path.replaceWith(newp)
+                        path.skip() 
+                    }
                 }
             },
-            Function(path) {
-                   
-                    var  node= path.node
-                    if (node.async && !alreadyWrapped(node)) {
-                        // console.log(node)
-                        node.body = wrap(node.body);
-                    }
-                
+            Function(path,state) { 
+                if(state.opts && !state.opts['addAsyncTry'] ){
+                    return 
+                }                
+                var  node= path.node
+                if (node.async && !alreadyWrapped(node)) {
+                    node.body = wrap(node.body);
+                }            
             },
             Program: {
                 exit: function(path){
-                    // console.log(path)
                     if(needRequireCache.length<=0) return;
                     var directives = path.node.directives;
                     if(directives[0] && directives[0].value.value=='calc polyfill'){
@@ -120,11 +105,9 @@ function exactCal(babel){
                     var Program = path.findParent(path => t.isProgram(path.node));
                     var directives = Program.node.directives;
                     var replaceOperator = pushCache(path.node.operator,state);
-
                     if(directives[0] && directives[0].value.value=='calc polyfill'){
                         return;
                     }
-
                     replaceOperator !== 'none' && path.replaceWith(
                         preOperationAST({
                             FUN_NAME: t.identifier(replaceOperator),
@@ -138,11 +121,9 @@ function exactCal(babel){
                     var Program = path.findParent(path => t.isProgram(path.node));
                     var directives = Program.node.directives;
                     var replaceOperator = pushCache(path.node.operator,state);
-
                     if(directives[0] && directives[0].value.value=='calc polyfill'){
                         return;
                     }
-
                     if(replaceOperator !== 'none'){
                         path.node.right = t.CallExpression(t.Identifier(replaceOperator), [path.node.left, path.node.right]);
                         path.node.operator = '=';
