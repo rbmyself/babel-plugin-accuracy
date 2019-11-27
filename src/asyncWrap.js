@@ -1,4 +1,4 @@
-export default function wrap (node, callback = 'asyncError') {
+ function wrap (node, callback = 'asyncError') {
     return {
         "body": [
             {
@@ -48,4 +48,8 @@ export default function wrap (node, callback = 'asyncError') {
         ],
         "type": "BlockStatement"
     }
+}
+
+module.exports = {
+    wrap
 }

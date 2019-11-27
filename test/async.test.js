@@ -6,7 +6,7 @@ pluginTester({
 	pluginName: 'arithmetic-overload',
     plugin: arithmeticOverload,
     pluginOptions:{
-        checkCong:true
+        addAsyncTry:true
     },
   
     tests: [
