@@ -1,6 +1,6 @@
 
-import 'source-map-support/register';
-import wrap from './asyncWrap.js';
+// require('source-map-support/register');
+var  wrap = require('./asyncWrap.js');
 
 function pushCache(operation,state){
     var operationFun;
