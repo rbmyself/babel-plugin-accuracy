@@ -16,7 +16,7 @@ npm install rbmyself/babel-plugin-accuracy --save-dev
 ## 添加rbmyself/babel-plugin-accuracy
 
 .babelrc  
-["rbmyse/babel-plugin-accuracy",options]
+["rbmyself/babel-plugin-accuracy",options]
 ## option
 1. checkCong：检查全等号
 2. addAsyncTry：async函数中增加try catch
