@@ -40,7 +40,7 @@ pluginTester({
         var {
           accAdd,
           accCong
-        } = require("@lianjia/babel-plugin-accuracy/src/calc.js");
+        } = require("babel-plugin-accuracy/src/calc.js");
 
         function a(b, c) {
           console.log(accAdd(0.1, 0.2));
