@@ -11,9 +11,9 @@
 
 ## Installation and Usage
 ```
-npm install rbmyself/babel-plugin-accuracy --save-dev
+npm install babel-plugin-accuracy --save-dev
 ```
-## 添加rbmyself/babel-plugin-accuracy
+## 添加babel-plugin-accuracy
 
 .babelrc  
 ["babel-plugin-accuracy",options]
