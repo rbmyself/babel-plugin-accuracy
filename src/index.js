@@ -53,6 +53,17 @@ function exactCal(babel){
 
     return {
         visitor:{
+            NewExpression:{
+                exit:function(path){
+                    var callee = path.node.callee
+                    if(t.isIdentifier(callee)&&callee.name =="Date"&&path.node.arguments[0].value){
+                        var replaceTem = template("LITERAL.replace(/-/g, '/')");
+                        console.log(path.node.arguments[0].value)
+                       var newpath =  t.newExpression(path.node.callee,[replaceTem({LITERAL: t.stringLiteral(path.node.arguments[0].value)} ).expression ])
+                        path.replaceWith(newpath )
+                    }
+                }
+            },
             CallExpression:{
                 exit: function(path,state){
                     if(state.opts && !state.opts['promiseCatch'] ){

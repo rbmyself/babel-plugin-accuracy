@@ -104,20 +104,18 @@ function accDiv(arg1, arg2) {
     return (r1 / r2) * Math.pow(10, t2 - t1);
 }
 function accCong(arg1, arg2) {
-    if(arg1 === arg2){
-        return true;
-    }
+  
     if(arg1 == arg2){
         console.error(`参数类型不一致，值为:${arg1}、${arg2}，类型为：${typeof arg1}、${typeof arg2}`)
-        return (arg1 == arg2);
+       
     }
     return (arg1 === arg2);
 }
 
 module.exports = {
-    accAdd,
-    accSub,
-    accMul,
-    accDiv,
-    accCong
+    accAdd:accAdd,
+    accSub:accSub,
+    accMul:accMul,
+    accDiv:accDiv,
+    accCong:accCong
 }
