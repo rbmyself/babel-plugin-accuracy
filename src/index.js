@@ -56,9 +56,9 @@ function exactCal(babel){
             NewExpression:{
                 exit:function(path){
                     var callee = path.node.callee
-                    if(t.isIdentifier(callee)&&callee.name =="Date"&&path.node.arguments[0].value){
+                    if(t.isIdentifier(callee)&&callee.name =="Date"&&path.node.arguments[0]&&path.node.arguments[0].value){
                         var replaceTem = template("LITERAL.replace(/-/g, '/')");
-                        console.log(path.node.arguments[0].value)
+                       
                        var newpath =  t.newExpression(path.node.callee,[replaceTem({LITERAL: t.stringLiteral(path.node.arguments[0].value)} ).expression ])
                         path.replaceWith(newpath )
                     }
