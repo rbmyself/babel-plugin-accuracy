@@ -106,7 +106,7 @@ function accDiv(arg1, arg2) {
 function accCong(arg1, arg2) {
   
     if(arg1 == arg2){
-        console.error(`参数类型不一致，值为:${arg1}、${arg2}，类型为：${typeof arg1}、${typeof arg2}`)
+        console.error('参数类型不一致，值为:'+arg1+'、'+arg2+'，类型为：'+typeof arg1+'、'+typeof arg2)
        
     }
     return (arg1 === arg2);

@@ -52,6 +52,7 @@ function exactCal(babel){
     }
 
     return {
+     
         visitor:{
             NewExpression:{
                 exit:function(path){
@@ -64,30 +65,7 @@ function exactCal(babel){
                     }
                 }
             },
-            CallExpression:{
-                exit: function(path,state){
-                    if(state.opts && !state.opts['promiseCatch'] ){
-                        return 
-                    }
-                    var node  = path.node             
-                    if(path.parentPath&&path.parentPath.parent&&t.isCallExpression(path.parentPath.parent)){                  
-                        return
-                    }                
-                    var   memberExpression= t.memberExpression
-                    var  callExpression= t.callExpression
-                    var   blockStatement= t.blockStatement
-                    var  arrowFunctionExpression= t.arrowFunctionExpression
-                    var consoleerrTemp = template.ast('console.error(err)');               
-                    if (t.isIdentifier(node.callee.property) &&node.callee.property.name === 'then') {
-                        var arrowFunc = arrowFunctionExpression([t.identifier('err')], blockStatement([consoleerrTemp]))
-                        var originFunc = callExpression(node.callee, node.arguments)
-                        var newFunc = memberExpression(originFunc, t.identifier('catch'))
-                        var newp = callExpression(newFunc,[arrowFunc])                     
-                        path.replaceWith(newp)
-                        path.skip() 
-                    }
-                }
-            },
+           
             Function(path,state) { 
                 if(state.opts && !state.opts['addAsyncTry'] ){
                     return 
@@ -98,17 +76,46 @@ function exactCal(babel){
                 }            
             },
             Program: {
-                exit: function(path){
+                exit: function(programPath,state){
+                    programPath.traverse({
+                        CallExpression:{
+                            exit: function(path){
+                                if(state.opts && !state.opts['promiseCatch'] ){
+                                    return 
+                                }
+                                var node  = path.node             
+                                if(path.parentPath&&path.parentPath.parent&&t.isCallExpression(path.parentPath.parent)){                  
+                                    return
+                                }                
+                                var   memberExpression= t.memberExpression
+                                var  callExpression= t.callExpression
+                                var   blockStatement= t.blockStatement
+                                var  arrowFunctionExpression= t.arrowFunctionExpression
+                                var consoleerrTemp = template.ast('console.error(err)');               
+                                if (t.isIdentifier(node.callee.property) &&node.callee.property.name === 'then') {
+                                    var arrowFunc = arrowFunctionExpression([t.identifier('err')], blockStatement([consoleerrTemp]))
+                                    var originFunc = callExpression(node.callee, node.arguments)
+                                    var newFunc = memberExpression(originFunc, t.identifier('catch'))
+                                    var newp = callExpression(newFunc,[arrowFunc])                     
+                                    path.replaceWith(newp)
+                                    path.skip() 
+                                }
+                            }
+                        },
+                    });
                     if(needRequireCache.length<=0) return;
-                    var directives = path.node.directives;
+                    var directives = programPath.node.directives;
                     if(directives[0] && directives[0].value.value=='calc polyfill'){
                         return;
                     }
-                    path.unshiftContainer('body', requireAST({
+                    programPath.unshiftContainer('body', requireAST({
                         PROPERTIES: preObjectExpressionAST(needRequireCache),
                         SOURCE: t.stringLiteral("babel-plugin-accuracy/src/calc.js")
                     }));
                     needRequireCache = [];
+                   
+                    
+                     
                 }
             },
             BinaryExpression: {
