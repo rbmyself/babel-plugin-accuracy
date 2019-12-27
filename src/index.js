@@ -76,10 +76,10 @@ function exactCal(babel){
                 }            
             },
             Program: {
-                exit: function(programPath,state){
+                enter: function(programPath,state){
                     programPath.traverse({
                         CallExpression:{
-                            exit: function(path){
+                            enter: function(path){
                                 if(state.opts && !state.opts['promiseCatch'] ){
                                     return 
                                 }
