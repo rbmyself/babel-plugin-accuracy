@@ -76,7 +76,7 @@ function exactCal(babel){
                 }            
             },
             Program: {
-                enter: function(programPath,state){
+                enter:function(programPath,state){
                     programPath.traverse({
                         CallExpression:{
                             enter: function(path){
@@ -103,6 +103,9 @@ function exactCal(babel){
                             }
                         },
                     });
+                },
+                exit: function(programPath,state){
+                    
                     if(needRequireCache.length<=0) return;
                     var directives = programPath.node.directives;
                     if(directives[0] && directives[0].value.value=='calc polyfill'){
